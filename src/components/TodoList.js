@@ -28,11 +28,7 @@ export default function TodoList() {
       <Container maxWidth="sm">
         <Card sx={{ minWidth: 275 }}>
           <CardContent>
-            <Typography
-              variant="h2"
-              gutterBottom
-              sx={{ color: "text.secondary" }}
-            >
+            <Typography variant="h2" sx={{ color: "text.secondary" }}>
               משימות
             </Typography>
             <Divider />

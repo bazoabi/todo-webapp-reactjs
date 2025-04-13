@@ -5,32 +5,32 @@ import TodoList from "./components/TodoList";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { blueGrey } from "@mui/material/colors";
 
-// const theme = createTheme({
-//   palette: {
-//     primary: {
-//       main: blueGrey[500],
-//     },
-//     secondary: {
-//       main: "#f44336",
-//     },
-//   },
-// });
+// Create a theme instance.
+const theme = createTheme({
+  typography: {
+    // Set the global font family for the application.
+    fontFamily: `'Rubik'`,
+  },
+  // You can add more theme customization below.
+});
 
 function App() {
   return (
-    <div
-      className="App"
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        background: "gray",
-        height: "100vh",
-        direction: "rtl",
-      }}
-    >
-      <TodoList />
-    </div>
+    <ThemeProvider theme={theme}>
+      <div
+        className="App"
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "gray",
+          height: "100vh",
+          direction: "rtl",
+        }}
+      >
+        <TodoList />
+      </div>
+    </ThemeProvider>
   );
 }
 
