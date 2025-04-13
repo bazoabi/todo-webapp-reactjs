@@ -42,7 +42,7 @@ export default function Todo() {
                 משימות
               </Typography>
               <Divider />
-              <Typography variant="h7" sx={{ textAlign: "right" }}>
+              <Typography variant="h6" sx={{ textAlign: "right" }}>
                 פרטים על המשימה
               </Typography>
             </Grid>
