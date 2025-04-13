@@ -16,6 +16,10 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 // Styles
 import "../App.css";
 
+// Others
+import { TodosContext } from "../contexts/TodosContext";
+import { useContext } from "react";
+
 const nonCheckedbtnStyle = {
   color: "#8bc34a",
   background: "white",
@@ -28,7 +32,18 @@ const checkedBtnStyle = {
   border: "solid #c9d0c1 3px",
 };
 
-export default function Todo({ todo, toggleCompleted }) {
+export default function Todo({ todo }) {
+  const { todos, setTodos } = useContext(TodosContext);
+
+  // Toggle Completed Logic
+  function toggleCompleted(id) {
+    setTodos((prevTodos) =>
+      prevTodos.map((t) =>
+        t.id === id ? { ...t, completed: !t.completed } : t
+      )
+    );
+  }
+
   return (
     <>
       <CssBaseline />
@@ -64,7 +79,7 @@ export default function Todo({ todo, toggleCompleted }) {
                 className="iconButton"
                 aria-label="Mark task as completed"
                 sx={todo.completed ? checkedBtnStyle : nonCheckedbtnStyle}
-                onClick={toggleCompleted}
+                onClick={() => toggleCompleted(todo.id)}
               >
                 <CheckIcon />
               </IconButton>
