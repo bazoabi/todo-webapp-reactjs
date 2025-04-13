@@ -22,11 +22,18 @@ const btnStyle = {
   border: "solid #8bc34a 3px",
 };
 
-export default function Todo() {
+const btnStyleChecked = {
+  color: "white",
+  background: "#66bd00",
+  border: "solid #c9d0c1 3px",
+};
+
+export default function Todo({ todo }) {
   return (
     <>
       <CssBaseline />
       <Card
+        key={todo.id}
         className="TodoCard"
         sx={{
           minWidth: 275,
@@ -39,11 +46,11 @@ export default function Todo() {
           <Grid container spacing={2}>
             <Grid size={8}>
               <Typography variant="h5" sx={{ textAlign: "right" }}>
-                משימות
+                {todo.title}
               </Typography>
               <Divider />
               <Typography variant="h6" sx={{ textAlign: "right" }}>
-                פרטים על המשימה
+                {todo.details}
               </Typography>
             </Grid>
             <Grid
@@ -55,7 +62,7 @@ export default function Todo() {
               <IconButton
                 className="iconButton"
                 aria-label="Mark task as completed"
-                sx={btnStyle}
+                sx={todo.completed ? btnStyleChecked : btnStyle}
               >
                 <CheckIcon />
               </IconButton>

@@ -15,7 +15,36 @@ import TextField from "@mui/material/TextField";
 // Components
 import Todo from "./Todo";
 
+// Others
+import { v4 as uuidv4 } from "uuid";
+
+const Todos = [
+  {
+    id: uuidv4(),
+    title: "משימה 1",
+    details: "תיאור המשימה 1",
+    completed: false,
+  },
+  {
+    id: uuidv4(),
+    title: "משימה 2",
+    details: "תיאור המשימה 2",
+    completed: true,
+  },
+  {
+    id: uuidv4(),
+    title: "משימה 3",
+    details: "תיאור המשימה 3",
+    completed: false,
+  },
+];
+
 export default function TodoList() {
+  // Todo Items Logic
+  const TodosJsx = Todos.map((todo) => {
+    return <Todo key={todo.id} todo={todo} />;
+  });
+
   // Filter Buttons Logic
   const [alignment, setAlignment] = React.useState("left");
 
@@ -56,7 +85,7 @@ export default function TodoList() {
             {/* ==== Filter Buttons ==== */}
 
             {/* Todo Items */}
-            <Todo />
+            {TodosJsx}
             {/* ==== Todo Items ==== */}
 
             <Grid container spacing={2} sx={{ marginTop: "2vh" }}>
