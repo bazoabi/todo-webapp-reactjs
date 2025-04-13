@@ -16,19 +16,19 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 // Styles
 import "../App.css";
 
-const btnStyle = {
+const nonCheckedbtnStyle = {
   color: "#8bc34a",
   background: "white",
   border: "solid #8bc34a 3px",
 };
 
-const btnStyleChecked = {
+const checkedBtnStyle = {
   color: "white",
   background: "#66bd00",
   border: "solid #c9d0c1 3px",
 };
 
-export default function Todo({ todo }) {
+export default function Todo({ todo, toggleCompleted }) {
   return (
     <>
       <CssBaseline />
@@ -59,35 +59,44 @@ export default function Todo({ todo }) {
               justifyContent="space-around"
               alignItems="center"
             >
+              {/* Check Icon Button */}
               <IconButton
                 className="iconButton"
                 aria-label="Mark task as completed"
-                sx={todo.completed ? btnStyleChecked : btnStyle}
+                sx={todo.completed ? checkedBtnStyle : nonCheckedbtnStyle}
+                onClick={toggleCompleted}
               >
                 <CheckIcon />
               </IconButton>
+              {/* ==== Check Icon Button ==== */}
+
+              {/* Edit Icon Button */}
               <IconButton
                 className="iconButton"
                 aria-label="Edit task"
                 sx={{
-                  ...btnStyle,
+                  ...nonCheckedbtnStyle,
                   color: "#1769aa",
                   border: "solid #1769aa 3px",
                 }}
               >
                 <EditOutlinedIcon />
               </IconButton>
+              {/* ==== Edit Icon Button ==== */}
+
+              {/* Delete Icon Button */}
               <IconButton
                 className="iconButton"
-                aria-label="Edit task"
+                aria-label="Delete task"
                 sx={{
-                  ...btnStyle,
+                  ...nonCheckedbtnStyle,
                   color: "#b23c17",
                   border: "solid #b23c17 3px",
                 }}
               >
                 <DeleteOutlineOutlinedIcon />
               </IconButton>
+              {/* ==== Delete Icon Button ==== */}
             </Grid>
           </Grid>
         </CardContent>
