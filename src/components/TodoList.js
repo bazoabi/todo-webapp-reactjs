@@ -7,13 +7,11 @@ import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
-
-import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
-import FormatAlignCenterIcon from "@mui/icons-material/FormatAlignCenter";
-import FormatAlignRightIcon from "@mui/icons-material/FormatAlignRight";
-import FormatAlignJustifyIcon from "@mui/icons-material/FormatAlignJustify";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+
+// Components
+import Todo from "./Todo";
 
 export default function TodoList() {
   // Filter Buttons Logic
@@ -58,6 +56,10 @@ export default function TodoList() {
               </ToggleButton>
             </ToggleButtonGroup>
             {/* ==== Filter Buttons ==== */}
+
+            {/* Todo Items */}
+            <Todo />
+            {/* ==== Todo Items ==== */}
           </CardContent>
           <CardActions>
             <Button size="small">Learn More</Button>
