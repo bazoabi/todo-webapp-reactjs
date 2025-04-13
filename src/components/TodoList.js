@@ -11,6 +11,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import { useState } from "react";
 
 // Components
 import Todo from "./Todo";
@@ -18,7 +19,7 @@ import Todo from "./Todo";
 // Others
 import { v4 as uuidv4 } from "uuid";
 
-const Todos = [
+const initialTodos = [
   {
     id: uuidv4(),
     title: "משימה 1",
@@ -40,13 +41,28 @@ const Todos = [
 ];
 
 export default function TodoList() {
+  function handleAddClick() {
+    console.log("Add Clicked");
+    if (titleInput === "") return;
+    const newTodo = {
+      id: uuidv4(),
+      title: titleInput,
+      details: "תיאור המשימה",
+      completed: false,
+    };
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+    setTitleInput("");
+  }
+
+  const [todos, setTodos] = useState(initialTodos);
   // Todo Items Logic
-  const TodosJsx = Todos.map((todo) => {
+  const TodosJsx = todos.map((todo) => {
     return <Todo key={todo.id} todo={todo} />;
   });
 
   // Filter Buttons Logic
   const [alignment, setAlignment] = React.useState("left");
+  const [titleInput, setTitleInput] = React.useState("");
 
   const handleAlignment = (event, newAlignment) => {
     setAlignment(newAlignment);
@@ -97,21 +113,25 @@ export default function TodoList() {
                   sx={{
                     width: "100%",
                   }}
+                  value={titleInput}
+                  onChange={(event) => {
+                    setTitleInput(event.target.value);
+                  }}
                 />
               </Grid>
               <Grid size={4}>
                 <Button
                   variant="contained"
                   sx={{ width: "100%", height: "100%" }}
+                  onClick={() => {
+                    handleAddClick();
+                  }}
                 >
                   הוספה
                 </Button>
               </Grid>
             </Grid>
           </CardContent>
-          <CardActions>
-            <Button size="small">Learn More</Button>
-          </CardActions>
         </Card>
       </Container>
     </>
