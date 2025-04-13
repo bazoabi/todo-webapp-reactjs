@@ -54,10 +54,25 @@ export default function TodoList() {
     setTitleInput("");
   }
 
+  // Toggle Completed Logic
+  function toggleCompleted(id) {
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo
+      )
+    );
+  }
+
   const [todos, setTodos] = useState(initialTodos);
   // Todo Items Logic
   const TodosJsx = todos.map((todo) => {
-    return <Todo key={todo.id} todo={todo} />;
+    return (
+      <Todo
+        key={todo.id}
+        todo={todo}
+        toggleCompleted={() => toggleCompleted(todo.id)}
+      />
+    );
   });
 
   // Filter Buttons Logic
