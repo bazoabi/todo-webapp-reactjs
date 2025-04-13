@@ -9,6 +9,8 @@ import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
+import Grid from "@mui/material/Grid";
+import TextField from "@mui/material/TextField";
 
 // Components
 import Todo from "./Todo";
@@ -56,6 +58,27 @@ export default function TodoList() {
             {/* Todo Items */}
             <Todo />
             {/* ==== Todo Items ==== */}
+
+            <Grid container spacing={2} sx={{ marginTop: "2vh" }}>
+              <Grid size={8}>
+                <TextField
+                  id="outlined-basic"
+                  label="הוספת משימה חדשה"
+                  variant="outlined"
+                  sx={{
+                    width: "100%",
+                  }}
+                />
+              </Grid>
+              <Grid size={4}>
+                <Button
+                  variant="contained"
+                  sx={{ width: "100%", height: "100%" }}
+                >
+                  הוספה
+                </Button>
+              </Grid>
+            </Grid>
           </CardContent>
           <CardActions>
             <Button size="small">Learn More</Button>
