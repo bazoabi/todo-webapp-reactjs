@@ -18,29 +18,12 @@ import Todo from "./Todo";
 
 // Others
 import { v4 as uuidv4 } from "uuid";
-
-const initialTodos = [
-  {
-    id: uuidv4(),
-    title: "משימה 1",
-    details: "תיאור המשימה 1",
-    completed: false,
-  },
-  {
-    id: uuidv4(),
-    title: "משימה 2",
-    details: "תיאור המשימה 2",
-    completed: true,
-  },
-  {
-    id: uuidv4(),
-    title: "משימה 3",
-    details: "תיאור המשימה 3",
-    completed: false,
-  },
-];
+import { TodosContext } from "../contexts/TodosContext";
+import { useContext } from "react";
 
 export default function TodoList() {
+  const { todos, setTodos } = useContext(TodosContext);
+
   function handleAddClick() {
     console.log("Add Clicked");
     if (titleInput === "") return;
@@ -54,25 +37,9 @@ export default function TodoList() {
     setTitleInput("");
   }
 
-  // Toggle Completed Logic
-  function toggleCompleted(id) {
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      )
-    );
-  }
-
-  const [todos, setTodos] = useState(initialTodos);
   // Todo Items Logic
   const TodosJsx = todos.map((todo) => {
-    return (
-      <Todo
-        key={todo.id}
-        todo={todo}
-        toggleCompleted={() => toggleCompleted(todo.id)}
-      />
-    );
+    return <Todo key={todo.id} todo={todo} />;
   });
 
   // Filter Buttons Logic
