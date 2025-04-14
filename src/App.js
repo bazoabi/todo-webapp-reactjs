@@ -17,6 +17,15 @@ const theme = createTheme({
     fontFamily: `'Rubik'`,
   },
   // You can add more theme customization below.
+  palette: {
+    primary: {
+      main: "#ff6e40",
+    },
+    // add todos cards background color
+    background: {
+      TodoCardColor: "#283593",
+    },
+  },
 });
 
 const initialTodos = [

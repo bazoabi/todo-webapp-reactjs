@@ -80,7 +80,10 @@ export default function TodoList() {
     <>
       <CssBaseline />
       <Container maxWidth="sm">
-        <Card sx={{ minWidth: 275 }}>
+        <Card
+          sx={{ minWidth: 275 }}
+          style={{ maxHeight: "50vh", overflow: "scroll" }}
+        >
           <CardContent>
             <Typography variant="h2" sx={{ color: "text.secondary" }}>
               משימות
@@ -94,6 +97,7 @@ export default function TodoList() {
               onChange={handleTodosAlignment}
               aria-label="Todos alignment"
               style={{ direction: "ltr", marginTop: "1vh" }}
+              color="primary"
             >
               <ToggleButton value="notCompleted" aria-label="right aligned">
                 לא הושלם
@@ -130,9 +134,11 @@ export default function TodoList() {
                 <Button
                   variant="contained"
                   sx={{ width: "100%", height: "100%" }}
+                  style={{ background: "primary" }}
                   onClick={() => {
                     handleAddClick();
                   }}
+                  disabled={titleInput === ""}
                 >
                   הוספה
                 </Button>
