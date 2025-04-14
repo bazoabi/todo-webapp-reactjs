@@ -212,7 +212,9 @@ export default function Todo({ todo }) {
         className="TodoCard"
         sx={{
           minWidth: 275,
-          background: "#2a3f45",
+          // take background color from theme
+          backgroundColor: "background.TodoCardColor",
+          // background: "background",
           color: "white",
           marginTop: "1vh",
         }}
@@ -220,7 +222,13 @@ export default function Todo({ todo }) {
         <CardContent>
           <Grid container spacing={2}>
             <Grid size={8}>
-              <Typography variant="h5" sx={{ textAlign: "right" }}>
+              <Typography
+                variant="h5"
+                sx={{
+                  textAlign: "right",
+                  textDecoration: todo.completed ? "line-through" : "none",
+                }}
+              >
                 {todo.title}
               </Typography>
               <Divider />
