@@ -11,7 +11,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { useState } from "react";
+import { useEffect } from "react";
 
 // Components
 import Todo from "./Todo";
@@ -24,6 +24,14 @@ import { useContext } from "react";
 export default function TodoList() {
   const { todos, setTodos } = useContext(TodosContext);
 
+  // Fetch Todos from localStorage after mounting the TodoList for the first time
+  useEffect(() => {
+    const storedTodos = localStorage.getItem("todos");
+    if (storedTodos) {
+      setTodos(JSON.parse(storedTodos));
+    }
+  }, []);
+
   function handleAddClick() {
     console.log("Add Clicked");
     if (titleInput === "") return;
@@ -33,7 +41,10 @@ export default function TodoList() {
       details: "תיאור המשימה",
       completed: false,
     };
-    setTodos((prevTodos) => [...prevTodos, newTodo]);
+
+    const updatedTodos = [...todos, newTodo];
+    setTodos(updatedTodos);
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
     setTitleInput("");
   }
 

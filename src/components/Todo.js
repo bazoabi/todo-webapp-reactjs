@@ -54,13 +54,12 @@ export default function Todo({ todo }) {
   const handleCloseDeleteDialog = (action) => {
     if (action === "Agree") {
       // Delete the todo
-      // setTodos((prevTodos) => prevTodos.filter((t) => t.id !== todo.id));
-
-      setTodos((prevTodos) =>
-        prevTodos.filter((t) => {
-          return t.id !== todo.id;
-        })
-      );
+      const updatedTodos = todos.filter((t) => {
+        return t.id !== todo.id;
+      });
+      setTodos(updatedTodos);
+      // Update the local storage with the new todos array
+      localStorage.setItem("todos", JSON.stringify(updatedTodos));
     }
     setOpenDeleteDialog(false);
   };
@@ -116,19 +115,19 @@ export default function Todo({ todo }) {
     const handleCloseUpdateDialog = (action) => {
       if (action === "Agree") {
         // Update todo
-        setTodos((prevTodos) =>
-          prevTodos.map((t) => {
-            if (t.id === todo.id) {
-              return {
-                ...t,
-                title: updatedTodo.title,
-                details: updatedTodo.details,
-              };
-            } else {
-              return t;
-            }
-          })
-        );
+        const updatedTodos = todos.map((t) => {
+          if (t.id === todo.id) {
+            return {
+              ...t,
+              title: updatedTodo.title,
+              details: updatedTodo.details,
+            };
+          } else {
+            return t;
+          }
+        });
+        setTodos(updatedTodos);
+        localStorage.setItem("todos", JSON.stringify(updatedTodos));
       }
       setOpenUpdateDialog(false);
     };
@@ -197,11 +196,12 @@ export default function Todo({ todo }) {
 
   // Toggle Completed Logic
   function toggleCompleted(id) {
-    setTodos((prevTodos) =>
-      prevTodos.map((t) =>
-        t.id === id ? { ...t, completed: !t.completed } : t
-      )
+    const updatedTodos = todos.map((t) =>
+      t.id === id ? { ...t, completed: !t.completed } : t
     );
+    setTodos(updatedTodos);
+    // Update the local storage with the new todos array
+    localStorage.setItem("todos", JSON.stringify(updatedTodos));
   }
 
   return (
