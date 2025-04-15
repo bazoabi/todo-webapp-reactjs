@@ -28,27 +28,17 @@ import { v4 as uuidv4 } from "uuid";
 import { TodosContext } from "../contexts/TodosContext";
 import { useContext, useState } from "react";
 
-export default function TodoList() {
-  // console.log("TodoList Rendered");
-  const { todos, setTodos } = useContext(TodosContext);
-  const [activeDialogTodo, setActiveDialogTodo] = useState(null);
+// Exctrating Update and Delete Dialogs to be used in the TodoList component
 
-  // Fetch Todos from localStorage after mounting the TodoList for the first time
-  useEffect(() => {
-    const storedTodos = localStorage.getItem("todos");
-    if (storedTodos) {
-      setTodos(JSON.parse(storedTodos));
-    }
-  }, []);
-
-  // Delete Dialog Logic //
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-
-  const handleClickOpenDeleteDialog = (todo) => {
-    setOpenDeleteDialog(true);
-    setActiveDialogTodo(todo);
-  };
-
+// Delete Dialog Logic //
+function DeleteDialog({
+  todos,
+  setTodos,
+  openDeleteDialog,
+  setOpenDeleteDialog,
+  activeDialogTodo,
+  setActiveDialogTodo,
+}) {
   const handleCloseDeleteDialog = (action) => {
     if (action === "Agree") {
       // Delete the todo
@@ -63,139 +53,175 @@ export default function TodoList() {
     setActiveDialogTodo(null);
   };
 
-  function DeleteDialog() {
-    return (
-      <Dialog
-        sx={{ direction: "rtl" }}
-        open={openDeleteDialog}
-        onClose={handleCloseDeleteDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"מחיקת משימה"}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            האם תרצה למחוק את המשימה?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => handleCloseDeleteDialog("Disagree")}
-            sx={{ color: "green" }}
-          >
-            לא
-          </Button>
-          <Button
-            onClick={() => handleCloseDeleteDialog("Agree")}
-            autoFocus
-            sx={{ color: "red" }}
-          >
-            כן
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
-  // === Delete Dialog Logic === //
+  return (
+    <Dialog
+      sx={{ direction: "rtl" }}
+      open={openDeleteDialog}
+      onClose={handleCloseDeleteDialog}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{"מחיקת משימה"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          האם תרצה למחוק את המשימה?
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => handleCloseDeleteDialog("Disagree")}
+          sx={{ color: "green" }}
+        >
+          לא
+        </Button>
+        <Button
+          onClick={() => handleCloseDeleteDialog("Agree")}
+          autoFocus
+          sx={{ color: "red" }}
+        >
+          כן
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+// === Delete Dialog Logic === //
 
-  // Update Dialog Logic //
+// Update Dialog Logic //
+function UpdateDialog({
+  todos,
+  setTodos,
+  openUpdateDialog,
+  setOpenUpdateDialog,
+  activeDialogTodo,
+  setActiveDialogTodo,
+}) {
+  const handleCloseUpdateDialog = (action) => {
+    if (action === "Agree") {
+      // Update todo
+      const updatedTodos = todos.map((t) => {
+        if (t.id === activeDialogTodo.id) {
+          return {
+            ...t,
+            title: activeDialogTodo.title,
+            details: activeDialogTodo.details,
+          };
+        } else {
+          return t;
+        }
+      });
+      setTodos(updatedTodos);
+      localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    }
+    setOpenUpdateDialog(false);
+    setActiveDialogTodo(null);
+  };
+
+  console.log("Update Dialog Rendered");
+  console.log("activeDialogTodo", activeDialogTodo);
+  console.log("openUpdateDialog", openUpdateDialog);
+
+  return (
+    <Dialog
+      sx={{ direction: "rtl" }}
+      open={openUpdateDialog}
+      onClose={handleCloseUpdateDialog}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{"עריכת משימה"}</DialogTitle>
+      <DialogContent>
+        <TextField
+          autoFocus
+          required
+          margin="dense"
+          id="todoTitle"
+          name="todoTitle"
+          label="שם המשימה"
+          type="text"
+          fullWidth
+          variant="standard"
+          value={activeDialogTodo?.title}
+          onChange={(e) =>
+            setActiveDialogTodo((prevActiveDialogTodo) => {
+              return {
+                ...prevActiveDialogTodo,
+                title: e.target.value,
+              };
+            })
+          }
+        />
+        <TextField
+          autoFocus
+          required
+          margin="dense"
+          id="todoDetails"
+          name="todoDetails"
+          label="תיאור המשימה"
+          multiline
+          type="text"
+          fullWidth
+          variant="standard"
+          value={activeDialogTodo?.details}
+          onChange={(e) =>
+            setActiveDialogTodo((prevActiveDialogTodo) => {
+              return {
+                ...prevActiveDialogTodo,
+                details: e.target.value,
+              };
+            })
+          }
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => handleCloseUpdateDialog("Disagree")}
+          sx={{ color: "red" }}
+        >
+          ביטול
+        </Button>
+        <Button
+          onClick={() => handleCloseUpdateDialog("Agree")}
+          autoFocus
+          sx={{ color: "green" }}
+        >
+          עדכון
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
+}
+// === Update Dialog Logic === //
+
+export default function TodoList() {
+  // console.log("TodoList Rendered");
+  const { todos, setTodos } = useContext(TodosContext);
+  const [activeDialogTodo, setActiveDialogTodo] = useState(null);
+
+  // Fetch Todos from localStorage after mounting the TodoList for the first time
+  useEffect(() => {
+    const storedTodos = localStorage.getItem("todos");
+    if (storedTodos) {
+      setTodos(JSON.parse(storedTodos));
+    }
+  }, []);
+
+  // Dialogs State and Handlers Logic //
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  const handleClickOpenDeleteDialog = (todo) => {
+    setOpenDeleteDialog(true);
+    setActiveDialogTodo(todo);
+  };
+
   const [openUpdateDialog, setOpenUpdateDialog] = useState(false);
 
   const handleClickOpenUpdateDialog = (todo) => {
     setOpenUpdateDialog(true);
     setActiveDialogTodo(todo);
   };
+  // === Dialogs State and Handlers Logic === //
 
-  function UpdateDialog() {
-    const [updatedTodo, setUpdatedTodo] = useState({
-      title: activeDialogTodo?.title,
-      details: activeDialogTodo?.details,
-    });
-
-    const handleCloseUpdateDialog = (action) => {
-      if (action === "Agree") {
-        // Update todo
-        const updatedTodos = todos.map((t) => {
-          if (t.id === activeDialogTodo.id) {
-            return {
-              ...t,
-              title: updatedTodo.title,
-              details: updatedTodo.details,
-            };
-          } else {
-            return t;
-          }
-        });
-        setTodos(updatedTodos);
-        localStorage.setItem("todos", JSON.stringify(updatedTodos));
-      }
-      setOpenUpdateDialog(false);
-      setActiveDialogTodo(null);
-    };
-
-    return (
-      <Dialog
-        sx={{ direction: "rtl" }}
-        open={openUpdateDialog}
-        onClose={handleCloseUpdateDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">{"עריכת משימה"}</DialogTitle>
-        <DialogContent>
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="todoTitle"
-            name="todoTitle"
-            label="שם המשימה"
-            type="text"
-            fullWidth
-            variant="standard"
-            value={updatedTodo.title}
-            onChange={(e) =>
-              setUpdatedTodo({ ...updatedTodo, title: e.target.value })
-            }
-          />
-          <TextField
-            autoFocus
-            required
-            margin="dense"
-            id="todoDetails"
-            name="todoDetails"
-            label="תיאור המשימה"
-            multiline
-            type="text"
-            fullWidth
-            variant="standard"
-            value={updatedTodo.details}
-            onChange={(e) =>
-              setUpdatedTodo({ ...updatedTodo, details: e.target.value })
-            }
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button
-            onClick={() => handleCloseUpdateDialog("Disagree")}
-            sx={{ color: "red" }}
-          >
-            ביטול
-          </Button>
-          <Button
-            onClick={() => handleCloseUpdateDialog("Agree")}
-            autoFocus
-            sx={{ color: "green" }}
-          >
-            עדכון
-          </Button>
-        </DialogActions>
-      </Dialog>
-    );
-  }
-  // === Update Dialog Logic === //
-
-  // Toggle Complete Task Logic //
   function handleToggleCompleteTodo(id) {
     const updatedTodos = todos.map((t) =>
       t.id === id ? { ...t, completed: !t.completed } : t
@@ -336,8 +362,22 @@ export default function TodoList() {
         </Card>
 
         {/* Dialogs */}
-        <DeleteDialog />
-        <UpdateDialog />
+        <DeleteDialog
+          todos={todos}
+          setTodos={setTodos}
+          openDeleteDialog={openDeleteDialog}
+          setOpenDeleteDialog={setOpenDeleteDialog}
+          activeDialogTodo={activeDialogTodo}
+          setActiveDialogTodo={setActiveDialogTodo}
+        />
+        <UpdateDialog
+          todos={todos}
+          setTodos={setTodos}
+          openUpdateDialog={openUpdateDialog}
+          setOpenUpdateDialog={setOpenUpdateDialog}
+          activeDialogTodo={activeDialogTodo}
+          setActiveDialogTodo={setActiveDialogTodo}
+        />
         {/* === Dialogs === */}
       </Container>
     </>
