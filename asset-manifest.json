@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/todo-webapp-reactjs/static/css/main.f84a1d64.css",
+    "main.js": "/todo-webapp-reactjs/static/js/main.306744b8.js",
+    "static/js/453.7a2ac254.chunk.js": "/todo-webapp-reactjs/static/js/453.7a2ac254.chunk.js",
+    "static/media/Rubik-SemiBold.ttf": "/todo-webapp-reactjs/static/media/Rubik-SemiBold.869208702057daef053d.ttf",
+    "static/media/Rubik-Medium.ttf": "/todo-webapp-reactjs/static/media/Rubik-Medium.0e121b4fa4d6e9bc5c69.ttf",
+    "static/media/Rubik-Regular.ttf": "/todo-webapp-reactjs/static/media/Rubik-Regular.55fa11cdc8b9a3ee842f.ttf",
+    "static/media/Rubik-Light.ttf": "/todo-webapp-reactjs/static/media/Rubik-Light.9d2ccd264dc61b954019.ttf",
+    "static/media/logo.svg": "/todo-webapp-reactjs/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
+    "index.html": "/todo-webapp-reactjs/index.html",
+    "main.f84a1d64.css.map": "/todo-webapp-reactjs/static/css/main.f84a1d64.css.map",
+    "main.306744b8.js.map": "/todo-webapp-reactjs/static/js/main.306744b8.js.map",
+    "453.7a2ac254.chunk.js.map": "/todo-webapp-reactjs/static/js/453.7a2ac254.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f84a1d64.css",
+    "static/js/main.306744b8.js"
+  ]
+}
