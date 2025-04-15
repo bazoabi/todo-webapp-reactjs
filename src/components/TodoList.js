@@ -11,7 +11,7 @@ import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 // Components
 import Todo from "./Todo";
@@ -22,6 +22,7 @@ import { TodosContext } from "../contexts/TodosContext";
 import { useContext } from "react";
 
 export default function TodoList() {
+  // console.log("TodoList Rendered");
   const { todos, setTodos } = useContext(TodosContext);
 
   // Fetch Todos from localStorage after mounting the TodoList for the first time
@@ -53,8 +54,14 @@ export default function TodoList() {
   // Filter Buttons Logic
   const [todosAlignment, setTodosAlignment] = React.useState("all");
 
-  const completedTodosList = todos.filter((t) => t.completed);
-  const notCompletedTodosList = todos.filter((t) => !t.completed);
+  const completedTodosList = useMemo(() => {
+    // console.log("Completed Todos List Rendered");
+    return todos.filter((t) => t.completed);
+  }, [todos]);
+  const notCompletedTodosList = useMemo(() => {
+    // console.log("Not Completed Todos List Rendered");
+    return todos.filter((t) => !t.completed);
+  }, [todos]);
 
   // Todo Items Logic
   let todosToBeRendered = todos;
