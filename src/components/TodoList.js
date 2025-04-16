@@ -23,6 +23,9 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+// Toast Context
+import { ToastContext } from "../contexts/ToastContext";
+
 // Others
 import { v4 as uuidv4 } from "uuid";
 import { TodosContext } from "../contexts/TodosContext";
@@ -38,6 +41,7 @@ function DeleteDialog({
   setOpenDeleteDialog,
   activeDialogTodo,
   setActiveDialogTodo,
+  showHideSnackbar,
 }) {
   const handleCloseDeleteDialog = (action) => {
     if (action === "Agree") {
@@ -51,6 +55,7 @@ function DeleteDialog({
     }
     setOpenDeleteDialog(false);
     setActiveDialogTodo(null);
+    showHideSnackbar("!משימה נמחקה בהצלחה");
   };
 
   return (
@@ -95,6 +100,7 @@ function UpdateDialog({
   setOpenUpdateDialog,
   activeDialogTodo,
   setActiveDialogTodo,
+  showHideSnackbar,
 }) {
   const handleCloseUpdateDialog = (action) => {
     if (action === "Agree") {
@@ -115,6 +121,7 @@ function UpdateDialog({
     }
     setOpenUpdateDialog(false);
     setActiveDialogTodo(null);
+    showHideSnackbar("!משימה עודכנה בהצלחה");
   };
 
   console.log("Update Dialog Rendered");
@@ -196,6 +203,7 @@ function UpdateDialog({
 export default function TodoList() {
   // console.log("TodoList Rendered");
   const { todos, setTodos } = useContext(TodosContext);
+  const { showHideSnackbar } = useContext(ToastContext);
   const [activeDialogTodo, setActiveDialogTodo] = useState(null);
 
   // Fetch Todos from localStorage after mounting the TodoList for the first time
@@ -229,6 +237,7 @@ export default function TodoList() {
     setTodos(updatedTodos);
     // Update the local storage with the new todos array
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    showHideSnackbar("!משימה עודכנה בהצלחה");
   }
   // ==== Toggle Complete Task Logic ==== //
 
@@ -246,6 +255,7 @@ export default function TodoList() {
     setTodos(updatedTodos);
     localStorage.setItem("todos", JSON.stringify(updatedTodos));
     setTitleInput("");
+    showHideSnackbar("!משימה חדשה נוספה בהצלחה");
   }
 
   const [titleInput, setTitleInput] = React.useState("");
@@ -369,6 +379,7 @@ export default function TodoList() {
           setOpenDeleteDialog={setOpenDeleteDialog}
           activeDialogTodo={activeDialogTodo}
           setActiveDialogTodo={setActiveDialogTodo}
+          showHideSnackbar={showHideSnackbar}
         />
         <UpdateDialog
           todos={todos}
@@ -377,6 +388,7 @@ export default function TodoList() {
           setOpenUpdateDialog={setOpenUpdateDialog}
           activeDialogTodo={activeDialogTodo}
           setActiveDialogTodo={setActiveDialogTodo}
+          showHideSnackbar={showHideSnackbar}
         />
         {/* === Dialogs === */}
       </Container>
