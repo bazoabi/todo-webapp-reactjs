@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 import MySnackbar from "../components/MySnackbar";
 
 export const ToastContext = createContext({
@@ -25,4 +25,8 @@ export const ToastProvider = ({ children }) => {
       {/* <MySnackbar /> */}
     </ToastContext.Provider>
   );
+};
+
+export const useToast = () => {
+  return useContext(ToastContext);
 };
