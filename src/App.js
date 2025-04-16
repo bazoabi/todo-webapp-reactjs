@@ -9,6 +9,8 @@ import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { TodosContext } from "./contexts/TodosContext";
+import { ToastContext } from "./contexts/ToastContext";
+import MySnackbar from "./components/MySnackbar";
 
 // Create a theme instance.
 const theme = createTheme({
@@ -51,24 +53,39 @@ const initialTodos = [
 
 function App() {
   const [todos, setTodos] = useState(initialTodos);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+
+  function showHideSnackbar(message) {
+    setSnackbarMessage(message);
+    setOpenSnackbar(true);
+    setTimeout(() => {
+      setOpenSnackbar(false);
+    }, 2000);
+  }
 
   return (
     <ThemeProvider theme={theme}>
-      <div
-        className="App"
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          background: "gray",
-          height: "100vh",
-          direction: "rtl",
-        }}
-      >
-        <TodosContext.Provider value={{ todos, setTodos }}>
-          <TodoList />
-        </TodosContext.Provider>
-      </div>
+      <ToastContext.Provider value={{ showHideSnackbar }}>
+        <div
+          className="App"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            background: "gray",
+            height: "100vh",
+            direction: "rtl",
+          }}
+        >
+          <TodosContext.Provider value={{ todos, setTodos }}>
+            <TodoList />
+          </TodosContext.Provider>
+        </div>
+      </ToastContext.Provider>
+      {/* Snackbar */}
+      <MySnackbar open={openSnackbar} message={snackbarMessage} />
+      {/* <MySnackbar /> */}
     </ThemeProvider>
   );
 }
