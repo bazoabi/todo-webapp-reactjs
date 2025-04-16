@@ -24,7 +24,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
 // Toast Context
-import { ToastContext } from "../contexts/ToastContext";
+import { useToast } from "../contexts/ToastContext";
 
 // Others
 import { v4 as uuidv4 } from "uuid";
@@ -203,7 +203,7 @@ function UpdateDialog({
 export default function TodoList() {
   // console.log("TodoList Rendered");
   const { todos, setTodos } = useContext(TodosContext);
-  const { showHideSnackbar } = useContext(ToastContext);
+  const { showHideSnackbar } = useToast();
   const [activeDialogTodo, setActiveDialogTodo] = useState(null);
 
   // Fetch Todos from localStorage after mounting the TodoList for the first time
