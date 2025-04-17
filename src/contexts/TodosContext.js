@@ -25,19 +25,28 @@ const initialTodos = [
 
 const TodosContext = createContext({
   todos: [],
-  setTodos: () => {},
+});
+
+const TodosDispatchContext = createContext({
+  todosDispatch: () => {},
 });
 
 export const TodosProvider = ({ children }) => {
   const [todos, todosDispatch] = useReducer(TodosReducer, initialTodos);
 
   return (
-    <TodosContext.Provider value={{ todos, todosDispatch }}>
-      {children}
+    <TodosContext.Provider value={{ todos }}>
+      <TodosDispatchContext.Provider value={{ todosDispatch }}>
+        {children}
+      </TodosDispatchContext.Provider>
     </TodosContext.Provider>
   );
 };
 
 export const useTodos = () => {
   return useContext(TodosContext);
+};
+
+export const useTodosDispatch = () => {
+  return useContext(TodosDispatchContext);
 };

@@ -3,7 +3,7 @@ import TodoList from "./components/TodoList";
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-import { TodosContext, TodosProvider } from "./contexts/TodosContext";
+import { TodosProvider } from "./contexts/TodosContext";
 import { ToastProvider } from "./contexts/ToastContext";
 
 // Create a theme instance.
