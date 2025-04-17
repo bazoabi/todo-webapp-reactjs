@@ -5,11 +5,12 @@ import TodoList from "./components/TodoList";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { blueGrey } from "@mui/material/colors";
 
-import { useState } from "react";
+import { useState, useReducer } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 import { TodosContext } from "./contexts/TodosContext";
 import { ToastProvider } from "./contexts/ToastContext";
+import TodosReducer from "./reducers/TodosReducer";
 
 // Create a theme instance.
 const theme = createTheme({
@@ -51,7 +52,8 @@ const initialTodos = [
 ];
 
 function App() {
-  const [todos, setTodos] = useState(initialTodos);
+  // const [todos, setTodos] = useState(initialTodos);
+  const [todos, todosDispatch] = useReducer(TodosReducer, initialTodos);
 
   return (
     <ThemeProvider theme={theme}>
@@ -67,7 +69,7 @@ function App() {
             direction: "rtl",
           }}
         >
-          <TodosContext.Provider value={{ todos, setTodos }}>
+          <TodosContext.Provider value={{ todos, todosDispatch }}>
             <TodoList />
           </TodosContext.Provider>
         </div>

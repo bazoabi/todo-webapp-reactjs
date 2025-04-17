@@ -2,7 +2,6 @@ import * as React from "react";
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
@@ -27,7 +26,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useToast } from "../contexts/ToastContext";
 
 // Others
-import { v4 as uuidv4 } from "uuid";
 import { TodosContext } from "../contexts/TodosContext";
 import { useContext, useState } from "react";
 
@@ -35,23 +33,22 @@ import { useContext, useState } from "react";
 
 // Delete Dialog Logic //
 function DeleteDialog({
-  todos,
-  setTodos,
   openDeleteDialog,
   setOpenDeleteDialog,
   activeDialogTodo,
   setActiveDialogTodo,
   showHideSnackbar,
 }) {
+  const { todosDispatch } = useContext(TodosContext);
   const handleCloseDeleteDialog = (action) => {
     if (action === "Agree") {
       // Delete the todo
-      const updatedTodos = todos.filter((t) => {
-        return t.id !== activeDialogTodo.id;
+      todosDispatch({
+        type: "REMOVE_TODO",
+        payload: {
+          id: activeDialogTodo.id,
+        },
       });
-      setTodos(updatedTodos);
-      // Update the local storage with the new todos array
-      localStorage.setItem("todos", JSON.stringify(updatedTodos));
     }
     setOpenDeleteDialog(false);
     setActiveDialogTodo(null);
@@ -94,39 +91,26 @@ function DeleteDialog({
 
 // Update Dialog Logic //
 function UpdateDialog({
-  todos,
-  setTodos,
   openUpdateDialog,
   setOpenUpdateDialog,
   activeDialogTodo,
   setActiveDialogTodo,
   showHideSnackbar,
 }) {
+  const { todosDispatch } = useContext(TodosContext);
   const handleCloseUpdateDialog = (action) => {
     if (action === "Agree") {
       // Update todo
-      const updatedTodos = todos.map((t) => {
-        if (t.id === activeDialogTodo.id) {
-          return {
-            ...t,
-            title: activeDialogTodo.title,
-            details: activeDialogTodo.details,
-          };
-        } else {
-          return t;
-        }
+      console.log("Updating Todo, activeDialogTodo", activeDialogTodo);
+      todosDispatch({
+        type: "UPDATE_TODO",
+        payload: activeDialogTodo,
       });
-      setTodos(updatedTodos);
-      localStorage.setItem("todos", JSON.stringify(updatedTodos));
     }
     setOpenUpdateDialog(false);
     setActiveDialogTodo(null);
     showHideSnackbar("!משימה עודכנה בהצלחה");
   };
-
-  console.log("Update Dialog Rendered");
-  console.log("activeDialogTodo", activeDialogTodo);
-  console.log("openUpdateDialog", openUpdateDialog);
 
   return (
     <Dialog
@@ -202,16 +186,16 @@ function UpdateDialog({
 
 export default function TodoList() {
   // console.log("TodoList Rendered");
-  const { todos, setTodos } = useContext(TodosContext);
+  // const { todos, setTodos } = useContext(TodosContext);
+  const { todos, todosDispatch } = useContext(TodosContext);
   const { showHideSnackbar } = useToast();
   const [activeDialogTodo, setActiveDialogTodo] = useState(null);
 
   // Fetch Todos from localStorage after mounting the TodoList for the first time
   useEffect(() => {
-    const storedTodos = localStorage.getItem("todos");
-    if (storedTodos) {
-      setTodos(JSON.parse(storedTodos));
-    }
+    todosDispatch({
+      type: "GET_TODOS",
+    });
   }, []);
 
   // Dialogs State and Handlers Logic //
@@ -231,12 +215,12 @@ export default function TodoList() {
   // === Dialogs State and Handlers Logic === //
 
   function handleToggleCompleteTodo(id) {
-    const updatedTodos = todos.map((t) =>
-      t.id === id ? { ...t, completed: !t.completed } : t
-    );
-    setTodos(updatedTodos);
-    // Update the local storage with the new todos array
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    todosDispatch({
+      type: "TOGGLE_TODO",
+      payload: {
+        id: id,
+      },
+    });
     showHideSnackbar("!משימה עודכנה בהצלחה");
   }
   // ==== Toggle Complete Task Logic ==== //
@@ -244,16 +228,12 @@ export default function TodoList() {
   function handleAddClick() {
     console.log("Add Clicked");
     if (titleInput === "") return;
-    const newTodo = {
-      id: uuidv4(),
-      title: titleInput,
-      details: "תיאור המשימה",
-      completed: false,
-    };
-
-    const updatedTodos = [...todos, newTodo];
-    setTodos(updatedTodos);
-    localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    todosDispatch({
+      type: "ADD_TODO",
+      payload: {
+        title: titleInput,
+      },
+    });
     setTitleInput("");
     showHideSnackbar("!משימה חדשה נוספה בהצלחה");
   }
@@ -373,8 +353,6 @@ export default function TodoList() {
 
         {/* Dialogs */}
         <DeleteDialog
-          todos={todos}
-          setTodos={setTodos}
           openDeleteDialog={openDeleteDialog}
           setOpenDeleteDialog={setOpenDeleteDialog}
           activeDialogTodo={activeDialogTodo}
@@ -382,8 +360,6 @@ export default function TodoList() {
           showHideSnackbar={showHideSnackbar}
         />
         <UpdateDialog
-          todos={todos}
-          setTodos={setTodos}
           openUpdateDialog={openUpdateDialog}
           setOpenUpdateDialog={setOpenUpdateDialog}
           activeDialogTodo={activeDialogTodo}
