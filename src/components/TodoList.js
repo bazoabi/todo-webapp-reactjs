@@ -26,7 +26,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useToast } from "../contexts/ToastContext";
 
 // Todos Context
-import { useTodos } from "../contexts/TodosContext";
+import { useTodos, useTodosDispatch } from "../contexts/TodosContext";
 
 // Others
 import { useState } from "react";
@@ -42,7 +42,7 @@ function DeleteDialog({
   showHideSnackbar,
 }) {
   // const { todosDispatch } = useContext(TodosContext);
-  const { todosDispatch } = useTodos();
+  const { todosDispatch } = useTodosDispatch();
   const handleCloseDeleteDialog = (action) => {
     if (action === "Agree") {
       // Delete the todo
@@ -101,7 +101,7 @@ function UpdateDialog({
   showHideSnackbar,
 }) {
   // const { todosDispatch } = useContext(TodosContext);
-  const { todosDispatch } = useTodos();
+  const { todosDispatch } = useTodosDispatch();
   const handleCloseUpdateDialog = (action) => {
     if (action === "Agree") {
       // Update todo
@@ -192,7 +192,8 @@ export default function TodoList() {
   // console.log("TodoList Rendered");
   // const { todos, setTodos } = useContext(TodosContext);
   // const { todos, todosDispatch } = useContext(TodosContext);
-  const { todos, todosDispatch } = useTodos();
+  const { todos } = useTodos();
+  const { todosDispatch } = useTodosDispatch();
   const { showHideSnackbar } = useToast();
   const [activeDialogTodo, setActiveDialogTodo] = useState(null);
 
